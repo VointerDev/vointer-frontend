@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "Frontend for Vointer",
     "scripts": {
-      "start": "echo 'This is a static site.'"
+        "start": "echo 'This is a static site.'"
+    },
+    "dependencies": {
+        "resend": "^4.2.0"
     }
-  }
-  
+}

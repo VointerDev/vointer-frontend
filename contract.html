@@ -1,0 +1,102 @@
+<!-- Voint – Företagsregistrering Steg 1 & 2 -->
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <title>Registrera Företag | Voint</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: 'SF Pro Display';
+        src: url('https://cdn.jsdelivr.net/gh/AppleDesignResources/SanFranciscoFonts@latest/SF-Pro-Display-Regular.otf') format('opentype');
+      }
+      body {
+        font-family: 'SF Pro Display', system-ui, sans-serif;
+        background: linear-gradient(to bottom right, #f0f4fc, #ffffff);
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script>
+      function goToStep2() {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+      }
+    </script>
+  </head>
+  <body class="text-gray-900">
+    <div class="min-h-screen flex items-center justify-center px-6 py-16">
+      <div class="bg-white shadow-lg rounded-xl w-full max-w-2xl p-8">
+
+        <!-- Steg 1 -->
+        <div id="step1">
+          <h2 class="text-3xl font-extrabold text-center text-blue-600 mb-8">Registrera ditt företag</h2>
+          <form onsubmit="event.preventDefault(); goToStep2();" class="space-y-6">
+            <div>
+              <label for="company" class="block text-sm font-medium text-gray-700">Företagsnamn</label>
+              <input type="text" id="company" name="company" required placeholder="Exempel AB" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div>
+              <label for="orgnr" class="block text-sm font-medium text-gray-700">Organisationsnummer</label>
+              <input type="text" id="orgnr" name="orgnr" required placeholder="556123-4567" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div>
+              <label for="contact" class="block text-sm font-medium text-gray-700">Kontaktperson</label>
+              <input type="text" id="contact" name="contact" required placeholder="Anna Andersson" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">E-post</label>
+              <input type="email" id="email" name="email" required placeholder="kontakt@exempel.se" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">Lösenord</label>
+              <input type="password" id="password" name="password" required placeholder="••••••••" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div class="flex items-center">
+              <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-blue-600" />
+              <label for="terms" class="ml-2 text-sm text-gray-600">
+                Jag godkänner <a href="#" class="text-blue-600 underline">villkoren</a> och <a href="#" class="text-blue-600 underline">integritetspolicyn</a>.
+              </label>
+            </div>
+            <div>
+              <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-500">Nästa steg →</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Steg 2 -->
+        <div id="step2" class="hidden">
+          <h2 class="text-3xl font-extrabold text-center text-blue-600 mb-8">Betalningsinformation</h2>
+          <form class="space-y-6">
+            <div>
+              <label for="cardname" class="block text-sm font-medium text-gray-700">Namn på kort</label>
+              <input type="text" id="cardname" name="cardname" required placeholder="Anna Andersson" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div>
+              <label for="cardnumber" class="block text-sm font-medium text-gray-700">Kortnummer</label>
+              <input type="text" id="cardnumber" name="cardnumber" required placeholder="1234 5678 9012 3456" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="expiry" class="block text-sm font-medium text-gray-700">Giltig till</label>
+                <input type="text" id="expiry" name="expiry" required placeholder="MM/ÅÅ" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+              </div>
+              <div>
+                <label for="cvc" class="block text-sm font-medium text-gray-700">CVC</label>
+                <input type="text" id="cvc" name="cvc" required placeholder="123" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+              </div>
+            </div>
+            <div>
+              <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-500">Slutför registrering</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

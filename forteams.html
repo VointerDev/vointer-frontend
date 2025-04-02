@@ -1,0 +1,110 @@
+<!-- Voint – För Team Sida (med fast nedersta navigering) -->
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <title>Voint | För Team</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: 'SF Pro Display';
+        src: url('https://cdn.jsdelivr.net/gh/AppleDesignResources/SanFranciscoFonts@latest/SF-Pro-Display-Regular.otf') format('opentype');
+      }
+      body {
+        font-family: 'SF Pro Display', system-ui, sans-serif;
+        background: linear-gradient(to bottom right, #f8fbff, #ffffff);
+      }
+      .floating-nav-links {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 50;
+        display: flex;
+        flex-direction: row;
+        gap: 14px;
+        background: white;
+        padding: 10px 20px;
+        border-radius: 9999px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+    </style>
+  </head>
+  <body class="text-gray-900">
+    <!-- Navbar -->
+    <header class="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
+      <h1 class="text-xl font-bold text-blue-600 tracking-wide">Voint</h1>
+      <div class="hidden md:flex items-center gap-4">
+        <a href="login.html" class="text-sm text-gray-600 hover:text-blue-600">Logga in</a>
+        <a href="signup.html" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-500 transition">Skapa konto →</a>
+      </div>
+    </header>
+
+    <!-- Flytande Navigering (Nere till vänster) -->
+    <div class="floating-nav-links">
+        <a href="index.html" class="text-sm text-gray-700 hover:text-blue-600">Översikt</a>
+        <a href="technology.html" class="text-sm text-gray-700 hover:text-blue-600">Teknik</a>
+        <a href="forteams.html" class="text-sm text-gray-700 hover:text-blue-600">För Team</a>
+        <a href="faq.html" class="text-sm text-gray-700 hover:text-blue-600 font-semibold">Vanliga Frågor</a>
+        <a href="contact.html" class="text-sm text-gray-700 hover:text-blue-600 font-semibold">Kontakta oss</a>
+      </div>
+
+    <!-- Hero Sektion -->
+    <section class="text-center px-6 py-24 max-w-4xl mx-auto">
+      <h2 class="text-5xl font-extrabold mb-6 leading-tight text-gray-900">
+        Byggt för moderna team 🧑‍💻👩‍💼
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Voint hjälper distans-, hybrid- och globala team att hitta den perfekta tiden för att mötas — oavsett tidszoner och kalendrar.
+        Mindre strul. Mer klarhet.
+      </p>
+    </section>
+
+    <!-- Fördelar -->
+    <section class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-3 gap-10 pb-20">
+      <div class="bg-white shadow p-6 rounded-xl border-t-4 border-blue-500">
+        <h3 class="text-xl font-semibold mb-2">🌍 Förbered för distansarbete</h3>
+        <p class="text-gray-600">
+          Oavsett om ditt team är i samma byggnad eller i olika världsdelar justeras tillgänglighet automatiskt efter tidszoner.
+        </p>
+      </div>
+
+      <div class="bg-white shadow p-6 rounded-xl border-t-4 border-yellow-400">
+        <h3 class="text-xl font-semibold mb-2">👥 Logik för flera deltagare</h3>
+        <p class="text-gray-600">
+          Bjud in flera personer till ett och samma förslag. Voint analyserar allas kalendrar och hittar bästa matchning.
+        </p>
+      </div>
+
+      <div class="bg-white shadow p-6 rounded-xl border-t-4 border-pink-500">
+        <h3 class="text-xl font-semibold mb-2">🔔 E-post & Slack-notiser</h3>
+        <p class="text-gray-600">
+          Få direktnotiser när någon svarar. Snart även integrerat med Slack och Microsoft Teams.
+        </p>
+      </div>
+
+      <div class="bg-white shadow p-6 rounded-xl border-t-4 border-green-500">
+        <h3 class="text-xl font-semibold mb-2">📊 Central översikt</h3>
+        <p class="text-gray-600">
+          Följ upp alla dina inbjudningar, svar och föreslagna tider från en samlad vy.
+        </p>
+      </div>
+
+      <div class="bg-white shadow p-6 rounded-xl border-t-4 border-purple-500">
+        <h3 class="text-xl font-semibold mb-2">🔐 Integritet som standard</h3>
+        <p class="text-gray-600">
+          Endast tillgänglighet scannas — aldrig innehåll i kalendern. Voint respekterar din integritet.
+        </p>
+      </div>
+
+      <div class="bg-white shadow p-6 rounded-xl border-t-4 border-indigo-500">
+        <h3 class="text-xl font-semibold mb-2">⚙️ Enkel integration</h3>
+        <p class="text-gray-600">
+          Lägg till Voint i din hemsida, Notion eller verktyg. Kopiera, klistra in och du är igång.
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

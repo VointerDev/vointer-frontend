@@ -57,38 +57,44 @@
       </div>
     </section>
     <script>
-  const form = document.querySelector("form");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Get form field values and trim whitespace
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const company = document.getElementById("company").value.trim();
-
-    console.log(name, email, password, company);  // Check the values before sending
-
-    try {
-      const res = await fetch("https://vointer-backend.onrender.com/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, company }),
+      const form = document.querySelector("form");
+    
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+    
+        // Get form field values and trim whitespace
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const company = document.getElementById("company").value.trim();
+    
+        // Validate that no field is empty
+        if (!name || !email || !password || !company) {
+          alert("Please fill all fields.");
+          return;
+        }
+    
+        console.log(name, email, password, company);  // Debugging line to check values
+    
+        try {
+          const res = await fetch("https://vointer-backend.onrender.com/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password, company }),
+          });
+    
+          const data = await res.json();
+    
+          if (res.ok) {
+            alert("Account created! Please verify your email.");
+            window.location.href = "login.html";
+          } else {
+            alert(data.msg || "Something went wrong.");
+          }
+        } catch (err) {
+          alert("Server error.");
+        }
       });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Account created! Please verify your email.");
-        window.location.href = "login.html";
-      } else {
-        alert(data.msg || "Something went wrong.");
-      }
-    } catch (err) {
-      alert("Server error.");
-    }
-  });
-    </script>      
+    </script>    
   </body>
 </html>

@@ -47,7 +47,7 @@
             <input type="text" id="company" name="company" required class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Your Company" />
           </div>
           <button type="submit" class="w-full py-3 px-6 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-500 transition">Sign Up</button>
-        </form>        
+        </form>           
         <p class="mt-6 text-sm text-gray-500 text-center">
           By signing up, you agree to our <a href="faq" class="text-blue-600 hover:underline">Terms</a> and <a href="faq" class="text-blue-600 hover:underline">Privacy Policy</a>.
         </p>
@@ -57,34 +57,38 @@
       </div>
     </section>
     <script>
-      const form = document.querySelector("form");
-    
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-    
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-    
-        try {
-          const res = await fetch("https://vointer-backend.onrender.com/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password, company })
+  const form = document.querySelector("form");
 
-          });
-    
-          const data = await res.json();
-    
-          if (res.ok) {
-            alert("Account created! You can now log in.");
-            window.location.href = "login.html";
-          } else {
-            alert(data.msg || "Something went wrong.");
-          }
-        } catch (err) {
-          alert("Server error.");
-        }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Get form field values and trim whitespace
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const company = document.getElementById("company").value.trim();
+
+    console.log(name, email, password, company);  // Check the values before sending
+
+    try {
+      const res = await fetch("https://vointer-backend.onrender.com/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, company }),
       });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Account created! Please verify your email.");
+        window.location.href = "login.html";
+      } else {
+        alert(data.msg || "Something went wrong.");
+      }
+    } catch (err) {
+      alert("Server error.");
+    }
+  });
     </script>      
   </body>
 </html>

@@ -1,0 +1,9 @@
+{
+    "name": "vointer-frontend",
+    "version": "1.0.0",
+    "description": "Frontend for Vointer",
+    "scripts": {
+      "start": "echo 'This is a static site.'"
+    }
+  }
+  

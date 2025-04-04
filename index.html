@@ -40,11 +40,18 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       background: white;
-      padding: 8px 14px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .floating-nav-links a {
+      font-size: 0.75rem;
+      padding: 4px 10px;
       border-radius: 9999px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      white-space: nowrap;
     }
 
     @media (max-width: 768px) {
@@ -57,14 +64,8 @@
         font-size: 1rem !important;
       }
 
-      .floating-nav-links a {
-        font-size: 0.75rem;
-        padding: 4px 8px;
-      }
-
-      .mobile-auth-buttons {
+      .auth-mobile {
         display: flex !important;
-        gap: 8px;
       }
     }
   </style>
@@ -72,32 +73,34 @@
 
 <body class="text-gray-900">
   <!-- Header -->
-  <header class="flex justify-between items-center px-4 py-3 bg-white shadow-sm">
-    <h1 class="text-lg sm:text-xl font-bold text-blue-600 tracking-wide">Vointer</h1>
+  <header class="flex flex-col items-center px-4 py-3 bg-white shadow-sm">
+    <h1 class="text-lg sm:text-xl font-bold text-blue-600 tracking-wide mb-1">Vointer</h1>
+
+    <!-- Mobile auth buttons -->
+    <div class="auth-mobile hidden flex-wrap gap-3 justify-center md:hidden mb-2">
+      <a href="login.html" class="text-sm text-blue-600 underline">Logga in</a>
+      <a href="signup.html" class="text-sm text-white bg-blue-600 px-4 py-1 rounded-full">Skapa konto</a>
+    </div>
+
+    <!-- Desktop auth buttons -->
     <div class="hidden md:flex items-center gap-3">
       <a href="login.html" class="text-sm text-gray-600 hover:text-blue-600">Logga in</a>
       <a href="signup.html" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-500 transition">Skapa konto →</a>
     </div>
   </header>
 
-  <!-- Mobile auth buttons -->
-  <div class="mobile-auth-buttons hidden md:hidden items-center justify-center mt-3 px-4">
-    <a href="login.html" class="text-sm text-blue-600 underline">Logga in</a>
-    <a href="signup.html" class="text-sm text-white bg-blue-600 px-3 py-1 rounded-full">Skapa konto</a>
-  </div>
-
   <!-- Floating bottom nav -->
   <div class="floating-nav-links">
-    <a href="index.html" class="text-sm text-gray-700 hover:text-blue-600">Översikt</a>
-    <a href="technology.html" class="text-sm text-gray-700 hover:text-blue-600">Teknik</a>
-    <a href="forteams.html" class="text-sm text-gray-700 hover:text-blue-600">För Team</a>
-    <a href="faq.html" class="text-sm text-gray-700 hover:text-blue-600">FAQ</a>
-    <a href="contact.html" class="text-sm text-gray-700 hover:text-blue-600">Kontakt</a>
+    <a href="index.html" class="text-gray-700 hover:text-blue-600">Översikt</a>
+    <a href="technology.html" class="text-gray-700 hover:text-blue-600">Teknik</a>
+    <a href="forteams.html" class="text-gray-700 hover:text-blue-600">För Team</a>
+    <a href="faq.html" class="text-gray-700 hover:text-blue-600">FAQ</a>
+    <a href="contact.html" class="text-gray-700 hover:text-blue-600">Kontakt</a>
   </div>
 
   <!-- Hero -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-    <div class="fade-in">
+    <div class="fade-in text-center md:text-left">
       <p class="uppercase text-sm text-gray-500 tracking-widest">Bjud in. Alternativ. klart.</p>
       <h2 class="text-4xl sm:text-6xl font-extrabold mb-5 text-gray-900 leading-tight">
         <span class="text-blue-600">Vointer</span><br />Sync the point.
@@ -106,7 +109,7 @@
         Skapat för moderna team som vill planera snabbare. Med Vointer väljer du 3 smarta tider — vi kollar allas
         tillgänglighet via Google Kalender och ger dig svar direkt.
       </p>
-      <a href="contract.html" class="block sm:inline-block px-6 py-3 bg-blue-600 text-white rounded-full text-md font-semibold shadow hover:bg-blue-500 text-center">
+      <a href="contract.html" class="inline-block px-6 py-3 bg-blue-600 text-white rounded-full text-md font-semibold shadow hover:bg-blue-500">
         Signera B2B avtal
       </a>
     </div>
@@ -121,7 +124,7 @@
   <div id="error" class="text-center text-red-500 text-base sm:text-lg my-6 px-4"></div>
   <div id="data" class="text-center text-sm text-gray-700 my-6 px-4 break-words max-w-sm mx-auto"></div>
 
-  <!-- Scripts -->
+  <!-- Backend ping script -->
   <script>
     const loadingMessage = document.getElementById('loading');
     const errorMessage = document.getElementById('error');
@@ -141,6 +144,7 @@
       });
   </script>
 
+  <!-- Fade in effect -->
   <script>
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

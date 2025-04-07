@@ -1,83 +1,104 @@
 <!-- Voint – Login Page -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <title>Voint | Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <style>
-      @font-face {
-        font-family: 'SF Pro Display';
-        src: url('https://cdn.jsdelivr.net/gh/AppleDesignResources/SanFranciscoFonts@latest/SF-Pro-Display-Regular.otf') format('opentype');
-      }
-      body {
-        font-family: 'SF Pro Display', system-ui, sans-serif;
-        background: linear-gradient(to bottom right, #eef4ff, #ffffff);
-      }
-    </style>
-  </head>
-  <body class="text-gray-900">
-    <!-- Header -->
-    <header class="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
-      <h1 class="text-xl font-bold text-blue-600 tracking-wide">Voint</h1>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <title>Voint | Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'SF Pro Display';
+      src: url('https://cdn.jsdelivr.net/gh/AppleDesignResources/SanFranciscoFonts@latest/SF-Pro-Display-Regular.otf') format('opentype');
+    }
+    body {
+      font-family: 'SF Pro Display', system-ui, sans-serif;
+      background: linear-gradient(to bottom right, #eef4ff, #ffffff);
+    }
+  </style>
+</head>
+<body class="text-gray-900">
+  <!-- Header -->
+  <header class="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
+    <h1 class="text-xl font-bold text-blue-600 tracking-wide">Voint</h1>
+  </header>
 
-    <!-- Login Form -->
-    <section class="flex items-center justify-center min-h-screen px-6 py-12">
-      <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Welcome back 👋</h2>
-        <form class="space-y-6">
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="email" name="email" required class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="you@company.com" />
-          </div>
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input type="password" id="password" name="password" required class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••" />
-          </div>
-          <button type="submit" class="w-full py-3 px-6 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-500 transition">Log In</button>
-        </form>
-        <p class="mt-6 text-sm text-center text-gray-700">
-          Don’t have an account? <a href="signup.html" class="text-blue-600 hover:underline">Sign up</a>
-        </p>
-        <p class="mt-2 text-sm text-center">
-          <a href="#" class="text-gray-500 hover:text-blue-600 hover:underline">Forgot your password?</a>
-        </p>
+  <!-- Login Form -->
+  <section class="flex items-center justify-center min-h-screen px-6 py-12">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+      <h2 class="text-3xl font-bold text-center text-gray-900 mb-6">Welcome back 👋</h2>
+
+      <!-- Status Message -->
+      <p id="statusMsg" class="text-center text-sm font-medium text-blue-600 mb-4"></p>
+
+      <!-- Spinner -->
+      <div id="spinner" class="hidden flex justify-center mb-4">
+        <svg class="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
       </div>
-    </section>
-    <script>
-      const form = document.querySelector("form");
-    
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-    
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-    
-        try {
-          const res = await fetch("https://vointer-backend.onrender.com/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-    
-          const data = await res.json();
-    
-          if (res.ok) {
-            localStorage.setItem("token", data.token);
-            alert("Login successful!");
+
+      <form class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="email" name="email" required class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="you@company.com" />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="password" name="password" required class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••" />
+        </div>
+        <button type="submit" class="w-full py-3 px-6 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-500 transition">Log In</button>
+      </form>
+
+      <p class="mt-6 text-sm text-center text-gray-700">
+        Don’t have an account? <a href="signup.html" class="text-blue-600 hover:underline">Sign up</a>
+      </p>
+      <p class="mt-2 text-sm text-center">
+        <a href="#" class="text-gray-500 hover:text-blue-600 hover:underline">Forgot your password?</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Login Logic -->
+  <script>
+    const form = document.querySelector("form");
+    const spinner = document.getElementById("spinner");
+    const statusMsg = document.getElementById("statusMsg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      spinner.classList.remove("hidden");
+      statusMsg.textContent = "";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      try {
+        const res = await fetch("https://vointer-backend.onrender.com/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+        spinner.classList.add("hidden");
+
+        if (res.ok) {
+          statusMsg.textContent = "🔐 Inloggning lyckades. Laddar dashboard...";
+          localStorage.setItem("token", data.token);
+          setTimeout(() => {
             window.location.href = "dashboard.html";
-          } else {
-            alert(data.msg || "Invalid login.");
-          }
-        } catch (err) {
-          alert("Server error.");
+          }, 1500);
+        } else {
+          statusMsg.textContent = data.msg || "❌ Felaktig inloggning.";
         }
-      });
-    </script>
-    
-  </body>
+      } catch (err) {
+        spinner.classList.add("hidden");
+        statusMsg.textContent = "🚨 Serverfel. Försök igen.";
+      }
+    });
+  </script>
+</body>
 </html>

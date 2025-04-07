@@ -1,177 +1,217 @@
 <!-- Voint – Dashboard Sida (med datumintervall + tidsperiodval + uppdaterad feedbackwidget realistiskt) -->
 <!DOCTYPE html>
 <html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <title>Voint | Kontrollpanel</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <style>
-      @font-face {
-        font-family: 'SF Pro Display';
-        src: url('https://cdn.jsdelivr.net/gh/AppleDesignResources/SanFranciscoFonts@latest/SF-Pro-Display-Regular.otf') format('opentype');
-      }
-      body {
-        font-family: 'SF Pro Display', system-ui, sans-serif;
-        background: #f8fafd;
-      }
-      .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-      }
-      .modal.active {
-        display: flex;
-      }
-      .time-btn {
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        border: 2px solid #d1d5db;
-        font-weight: 600;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: background-color 0.2s, color 0.2s;
-      }
-      .time-btn:hover {
-        background-color: #eff6ff;
-      }
-      .banner-slide {
-        position: relative;
-        background-color: #fef9c3;
-        color: #92400e;
-        text-align: center;
-        font-size: 0.875rem;
-        padding: 0.75rem;
-        animation: slideDown 0.6s ease-in-out;
-      }
-      @keyframes slideDown {
-        from {
-          transform: translateY(-100%);
-        }
-        to {
-          transform: translateY(0);
-        }
-      }
-    </style>
-    <script>
-      function toggleModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.toggle('active');
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <title>Voint | Kontrollpanel</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'SF Pro Display';
+      src: url('https://cdn.jsdelivr.net/gh/AppleDesignResources/SanFranciscoFonts@latest/SF-Pro-Display-Regular.otf') format('opentype');
+    }
+
+    body {
+      font-family: 'SF Pro Display', system-ui, sans-serif;
+      background: #f8fafd;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .time-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 2px solid #d1d5db;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .time-btn:hover {
+      background-color: #eff6ff;
+    }
+
+    .banner-slide {
+      position: relative;
+      background-color: #fef9c3;
+      color: #92400e;
+      text-align: center;
+      font-size: 0.875rem;
+      padding: 0.75rem;
+      animation: slideDown 0.6s ease-in-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
       }
 
-      function selectTimePeriod(button) {
-        document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('bg-blue-600', 'text-white'));
-        button.classList.add('bg-blue-600', 'text-white');
+      to {
+        transform: translateY(0);
       }
-    </script>
-  </head>
-  <body class="text-gray-900">
-    <!-- Toppmeny -->
-    <header class="flex justify-between items-center px-6 py-4 bg-white shadow">
-      <h1 class="text-xl font-bold text-blue-600">Voint</h1>
-      <div class="flex items-center space-x-4">
-        <span class="text-sm text-gray-600">Hej, John 👋</span>
-        <a href="index.html" class="text-sm text-gray-500 hover:text-blue-600">Logga ut</a>
-      </div>
-    </header>
+    }
+  </style>
+  <script>
+    // Kontrollera om JWT-token finns
+    const token = localStorage.getItem("token");
 
-    <!-- Beta-banner -->
-    <div class="banner-slide">
-      🎉 Du är med i vår betatest! All funktionalitet är gratis för dig och ditt team (upp till 20 användare) under testperioden.
+    if (!token) {
+      // ❌ Ingen token = ingen tillgång
+      window.location.href = "login.html";
+    } else {
+      // ✅ Verifiera token med backend (valfritt)
+      fetch("https://vointer-backend.onrender.com/api/auth/verify-token", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => {
+          if (!res.ok) throw new Error();
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          window.location.href = "login.html";
+        });
+    }
+
+    function toggleModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.toggle('active');
+    }
+
+    function selectTimePeriod(button) {
+      document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('bg-blue-600', 'text-white'));
+      button.classList.add('bg-blue-600', 'text-white');
+    }
+  </script>
+</head>
+
+<body class="text-gray-900">
+  <!-- Toppmeny -->
+  <header class="flex justify-between items-center px-6 py-4 bg-white shadow">
+    <h1 class="text-xl font-bold text-blue-600">Voint</h1>
+    <div class="flex items-center space-x-4">
+      <span class="text-sm text-gray-600">Hej, John 👋</span>
+      <a href="index.html" class="text-sm text-gray-500 hover:text-blue-600">Logga ut</a>
     </div>
+  </header>
 
-    <!-- Kontrollpanel -->
-    <main class="max-w-6xl mx-auto px-6 py-12">
-      <h2 class="text-3xl font-bold mb-8">📊 Din Kontrollpanel</h2>
+  <!-- Beta-banner -->
+  <div class="banner-slide">
+    🎉 Du är med i vår betatest! All funktionalitet är gratis för dig och ditt team (upp till 20 användare) under
+    testperioden.
+  </div>
 
-      <!-- Skapa ny inbjudan -->
-      <section class="mb-12 bg-white p-6 rounded-xl shadow border border-blue-100">
-        <h3 class="text-xl font-semibold mb-4 text-blue-700">📆 Skapa nytt förslag</h3>
-        <form class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Titel på mötet</label>
-            <input type="text" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Teammöte, Fika, Uppföljning..." />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">E-postadresser till deltagare</label>
-            <input type="text" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="jane@example.com, mark@company.com" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Startdatum</label>
-            <input type="date" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Slutdatum</label>
-            <input type="date" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
-          </div>
-        </form>
+  <!-- Kontrollpanel -->
+  <main class="max-w-6xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-8">📊 Din Kontrollpanel</h2>
 
-        <!-- Välj tidperiod -->
-        <div class="mt-6">
-          <p class="text-sm font-medium text-gray-700 mb-2">Välj tidsperiod:</p>
-          <div class="flex gap-4">
-            <button type="button" onclick="selectTimePeriod(this)" class="time-btn">08:00–15:30</button>
-            <button type="button" onclick="selectTimePeriod(this)" class="time-btn">15:30–21:00</button>
-            <button type="button" onclick="selectTimePeriod(this)" class="time-btn">Valfri tid</button>
-          </div>
+    <!-- Skapa ny inbjudan -->
+    <section class="mb-12 bg-white p-6 rounded-xl shadow border border-blue-100">
+      <h3 class="text-xl font-semibold mb-4 text-blue-700">📆 Skapa nytt förslag</h3>
+      <form class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Titel på mötet</label>
+          <input type="text" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg"
+            placeholder="Teammöte, Fika, Uppföljning..." />
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">E-postadresser till deltagare</label>
+          <input type="text" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg"
+            placeholder="jane@example.com, mark@company.com" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Startdatum</label>
+          <input type="date" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Slutdatum</label>
+          <input type="date" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg" />
+        </div>
+      </form>
 
-        <div class="mt-6 text-right">
-          <button class="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-500">När kan dem?</button>
-        </div>
-      </section>
-
-      <!-- Pågående förslag -->
-      <section>
-        <h3 class="text-xl font-semibold mb-4 text-blue-700">🗓️ Pågående omröstningar</h3>
-        <div class="bg-white rounded-xl border border-gray-200 shadow divide-y">
-          <div class="p-4 flex justify-between items-center">
-            <div>
-              <p class="font-medium text-gray-800">Strategimöte Produkt</p>
-              <p class="text-sm text-gray-500">Intervall: 10 aug – 12 aug (Dagtid)</p>
-              <p class="text-sm text-gray-500">Inbjudna: 4 • Svar: 4/4</p>
-            </div>
-            <button onclick="toggleModal('modal1')" class="text-sm px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full hover:bg-yellow-200">Visa svar</button>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Feedback Modal -->
-    <div id="modal1" class="modal">
-      <div class="bg-white max-w-xl w-full p-6 rounded-2xl shadow-xl">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold">Svar – Strategimöte Produkt</h3>
-          <button onclick="toggleModal('modal1')" class="text-sm text-gray-400 hover:text-red-500">Stäng ✖</button>
-        </div>
-        <div class="mb-4">
-          <p class="text-sm text-gray-500 font-medium">📅 Optimal tid inom valt intervall:</p>
-          <div class="grid grid-cols-1 gap-2 mt-2 text-sm text-gray-800">
-            <div class="flex justify-between bg-green-50 px-4 py-2 rounded border border-green-400">
-              <span>Vald tid:</span>
-              <span>11 aug kl 10:30</span>
-            </div>
-          </div>
-        </div>
-        <div class="mt-6">
-          <p class="text-sm font-medium text-gray-600 mb-3">🗣️ Alla deltagare är tillgängliga:</p>
-          <ul class="space-y-2 text-sm text-gray-800">
-            <li><strong>Jane Doe</strong> ✅</li>
-            <li><strong>Mike Smith</strong> ✅</li>
-            <li><strong>Lisa Svensson</strong> ✅</li>
-            <li><strong>Oskar Nilsson</strong> ✅</li>
-          </ul>
+      <!-- Välj tidperiod -->
+      <div class="mt-6">
+        <p class="text-sm font-medium text-gray-700 mb-2">Välj tidsperiod:</p>
+        <div class="flex gap-4">
+          <button type="button" onclick="selectTimePeriod(this)" class="time-btn">08:00–15:30</button>
+          <button type="button" onclick="selectTimePeriod(this)" class="time-btn">15:30–21:00</button>
+          <button type="button" onclick="selectTimePeriod(this)" class="time-btn">Valfri tid</button>
         </div>
       </div>
+
+      <div class="mt-6 text-right">
+        <button class="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-500">När kan
+          dem?</button>
+      </div>
+    </section>
+
+    <!-- Pågående förslag -->
+    <section>
+      <h3 class="text-xl font-semibold mb-4 text-blue-700">🗓️ Pågående omröstningar</h3>
+      <div class="bg-white rounded-xl border border-gray-200 shadow divide-y">
+        <div class="p-4 flex justify-between items-center">
+          <div>
+            <p class="font-medium text-gray-800">Strategimöte Produkt</p>
+            <p class="text-sm text-gray-500">Intervall: 10 aug – 12 aug (Dagtid)</p>
+            <p class="text-sm text-gray-500">Inbjudna: 4 • Svar: 4/4</p>
+          </div>
+          <button onclick="toggleModal('modal1')"
+            class="text-sm px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full hover:bg-yellow-200">Visa svar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Feedback Modal -->
+  <div id="modal1" class="modal">
+    <div class="bg-white max-w-xl w-full p-6 rounded-2xl shadow-xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">Svar – Strategimöte Produkt</h3>
+        <button onclick="toggleModal('modal1')" class="text-sm text-gray-400 hover:text-red-500">Stäng ✖</button>
+      </div>
+      <div class="mb-4">
+        <p class="text-sm text-gray-500 font-medium">📅 Optimal tid inom valt intervall:</p>
+        <div class="grid grid-cols-1 gap-2 mt-2 text-sm text-gray-800">
+          <div class="flex justify-between bg-green-50 px-4 py-2 rounded border border-green-400">
+            <span>Vald tid:</span>
+            <span>11 aug kl 10:30</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6">
+        <p class="text-sm font-medium text-gray-600 mb-3">🗣️ Alla deltagare är tillgängliga:</p>
+        <ul class="space-y-2 text-sm text-gray-800">
+          <li><strong>Jane Doe</strong> ✅</li>
+          <li><strong>Mike Smith</strong> ✅</li>
+          <li><strong>Lisa Svensson</strong> ✅</li>
+          <li><strong>Oskar Nilsson</strong> ✅</li>
+        </ul>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

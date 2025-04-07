@@ -74,49 +74,69 @@
     const form = document.querySelector("form");
     const spinner = document.getElementById("spinner");
     const statusMsg = document.getElementById("statusMsg");
-
+    const formSection = document.querySelector("form").parentElement;
+  
+    const messages = [
+      "🔄 Skapar konto...",
+      "🌴 Väcker djungeln...",
+      "📬 Verifiera ditt konto via email!"
+    ];
+  
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      // Reset
-      statusMsg.textContent = "";
-      spinner.classList.remove("hidden");
-
-      // Grab values
+  
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
       const company = document.getElementById("company").value.trim();
-
+  
       if (!name || !email || !password || !company) {
-        spinner.classList.add("hidden");
         statusMsg.textContent = "Fyll i alla fält.";
         return;
       }
-
+  
+      // Visa bara spinner + status
+      formSection.classList.add("hidden");
+      spinner.classList.remove("hidden");
+      statusMsg.classList.remove("hidden");
+  
+      let currentStep = 0;
+      const cycleMessages = setInterval(() => {
+        statusMsg.textContent = messages[currentStep];
+        currentStep++;
+      }, 1500);
+  
       try {
         const res = await fetch("https://vointer-backend.onrender.com/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, password, company }),
         });
-
+  
         const data = await res.json();
-        spinner.classList.add("hidden");
-
+        clearInterval(cycleMessages);
+  
         if (res.ok) {
-          statusMsg.textContent = "Verifiera ditt konto via Email ✉️";
+          statusMsg.textContent = messages[messages.length - 1];
           setTimeout(() => {
-            window.location.href = "login.html";
-          }, 3000);
+            statusMsg.innerHTML = `
+              ✅ Konto skapat!<br />
+              Gå till <a href="login.html" class="text-blue-600 underline">inloggning</a> eller 
+              <a href="index.html" class="text-blue-600 underline">hemsidan</a>.
+            `;
+          }, 2000);
         } else {
           statusMsg.textContent = data.msg || "Något gick fel.";
+          spinner.classList.add("hidden");
+          formSection.classList.remove("hidden");
         }
       } catch (err) {
+        clearInterval(cycleMessages);
         spinner.classList.add("hidden");
+        formSection.classList.remove("hidden");
         statusMsg.textContent = "Serverfel, försök igen.";
       }
     });
-  </script>
+  </script>  
 </body>
 </html>
